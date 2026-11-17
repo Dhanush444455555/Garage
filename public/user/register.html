@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — Kannada Riders Garage 14</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/theme.css"/>
+  <style>
+    body {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 20px; position: relative; overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at 25% 60%, rgba(255,107,43,0.09) 0%, transparent 55%),
+                  radial-gradient(ellipse at 75% 25%, rgba(244,169,38,0.07) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .register-container { width: 100%; max-width: 480px; position: relative; z-index: 1; }
+    .login-brand { text-align: center; margin-bottom: 28px; }
+    .login-brand .garage-icon { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+    .login-brand h1 { font-size: 1.4rem; }
+    .login-brand .subtitle { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+    .register-box {
+      background: var(--bg-card); border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl); padding: 36px 32px;
+      position: relative; overflow: hidden;
+    }
+    .register-box::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #ff6b2b, #f4a926, #2ec4b6);
+    }
+    .login-link { text-align: center; margin-top: 20px; font-size: 0.875rem; color: var(--text-secondary); }
+    .login-link a { color: var(--accent-orange); font-weight: 600; }
+    .back-link { text-align: center; margin-top: 12px; font-size: 0.875rem; color: var(--text-muted); }
+    .back-link a { color: var(--accent-orange); }
+    .password-strength {
+      height: 4px; border-radius: 2px; margin-top: 6px;
+      background: var(--bg-elevated); overflow: hidden; display: none;
+    }
+    .password-strength-bar {
+      height: 100%; border-radius: 2px; transition: width 0.3s, background 0.3s;
+      width: 0;
+    }
+    .pw-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="login-brand">
+      <span class="garage-icon">🏍️</span>
+      <h1 class="gradient-text">Kannada Riders Garage 14</h1>
+      <p class="subtitle">Create Your Customer Account</p>
+    </div>
+
+    <div class="register-box">
+      <h2 style="margin-bottom:24px; font-size:1.3rem; display:flex; align-items:center; gap:10px;">
+        <span>📝</span> Customer Registration
+      </h2>
+
+      <div id="alert" class="alert"></div>
+
+      <form id="registerForm" novalidate>
+        <div class="form-group">
+          <label for="full_name">Full Name *</label>
+          <input
+            type="text" id="full_name" name="full_name" class="form-control"
+            placeholder="Ramesh Kumar" autocomplete="name" required
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input
+              type="email" id="email" name="email" class="form-control"
+              placeholder="you@example.com" autocomplete="email" required
+            />
+          </div>
+          <div class="form-group">
+            <label for="mobile">Mobile Number *</label>
+            <input
+              type="tel" id="mobile" name="mobile" class="form-control"
+              placeholder="9876543210" autocomplete="tel" required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <div class="input-group">
+            <input
+              type="password" id="password" name="password" class="form-control"
+              placeholder="Minimum 6 characters" autocomplete="new-password" required
+            />
+            <button type="button" class="input-group-icon" data-toggle-password="password">👁</button>
+          </div>
+          <div class="password-strength" id="strengthBar">
+            <div class="password-strength-bar" id="strengthFill"></div>
+          </div>
+          <p class="pw-hint" id="strengthLabel"></p>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm_password">Confirm Password *</label>
+          <div class="input-group">
+            <input
+              type="password" id="confirm_password" name="confirm_password" class="form-control"
+              placeholder="Repeat your password" autocomplete="new-password" required
+            />
+            <button type="button" class="input-group-icon" data-toggle-password="confirm_password">👁</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submitBtn">
+          🚀 Create Account
+        </button>
+      </form>
+
+      <div class="login-link">
+        Already have an account? <a href="/user/login">Login →</a>
+      </div>
+      <div class="back-link"><a href="/">← Back to Home</a></div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="/js/app.js"></script>
+  <script>
+    const form      = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const alertEl   = document.getElementById('alert');
+    const pwInput   = document.getElementById('password');
+    const strengthBar  = document.getElementById('strengthBar');
+    const strengthFill = document.getElementById('strengthFill');
+    const strengthLabel= document.getElementById('strengthLabel');
+
+    // Password strength meter
+    pwInput.addEventListener('input', () => {
+      const val = pwInput.value;
+      if (!val) { strengthBar.style.display = 'none'; strengthLabel.textContent = ''; return; }
+      strengthBar.style.display = 'block';
+      let score = 0;
+      if (val.length >= 6)  score++;
+      if (val.length >= 10) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^a-zA-Z0-9]/.test(val)) score++;
+      const levels = [
+        { w: '20%', c: '#e63946', l: 'Weak' },
+        { w: '40%', c: '#ff6b2b', l: 'Fair' },
+        { w: '60%', c: '#f4a926', l: 'Good' },
+        { w: '80%', c: '#2ec4b6', l: 'Strong' },
+        { w: '100%',c: '#06d6a0', l: 'Very Strong' },
+      ];
+      const level = levels[Math.min(score - 1, 4)] || levels[0];
+      strengthFill.style.width = level.w;
+      strengthFill.style.background = level.c;
+      strengthLabel.textContent = level.l;
+      strengthLabel.style.color = level.c;
+    });
+
+    // Redirect if already logged in
+    (async () => {
+      try {
+        const { ok, data } = await API.get('/auth/me');
+        if (ok && data.user && data.user.role === 'customer') window.location.href = '/user/dashboard';
+      } catch(e) {}
+    })();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      FormUtils.hideAlert(alertEl);
+
+      const full_name       = document.getElementById('full_name').value.trim();
+      const email           = document.getElementById('email').value.trim();
+      const mobile          = document.getElementById('mobile').value.trim();
+      const password        = document.getElementById('password').value;
+      const confirm_password= document.getElementById('confirm_password').value;
+
+      if (!full_name || !email || !mobile || !password || !confirm_password) {
+        FormUtils.showAlert(alertEl, 'All fields are required.');
+        return;
+      }
+      if (password !== confirm_password) {
+        FormUtils.showAlert(alertEl, 'Passwords do not match.');
+        return;
+      }
+      if (password.length < 6) {
+        FormUtils.showAlert(alertEl, 'Password must be at least 6 characters.');
+        return;
+      }
+
+      FormUtils.setLoading(submitBtn, true);
+      try {
+        const { ok, data } = await API.post('/auth/customer/register', { full_name, email, mobile, password, confirm_password });
+        if (ok && data.success) {
+          Toast.success('Account created! Redirecting to login…');
+          setTimeout(() => window.location.href = '/user/login', 1200);
+        } else {
+          const msg = data.errors ? data.errors[0].msg : (data.message || 'Registration failed.');
+          FormUtils.showAlert(alertEl, msg);
+          FormUtils.setLoading(submitBtn, false);
+        }
+      } catch(err) {
+        FormUtils.showAlert(alertEl, 'Connection error. Please try again.');
+        FormUtils.setLoading(submitBtn, false);
+      }
+    });
+  </script>
+</body>
+</html>
+

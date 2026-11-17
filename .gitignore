@@ -1,0 +1,9 @@
+node_modules/
+.env
+garage.db
+garage.db-shm
+garage.db-wal
+*.log
+.DS_Store
+Thumbs.db
+

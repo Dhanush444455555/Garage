@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kannada Riders Garage 14 — Premium Motorcycle Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/theme.css"/>
+  <style>
+    .landing-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(255,107,43,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(244,169,38,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(67,97,238,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .brand-logo {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent-orange);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo::before,
+    .brand-logo::after {
+      content: '';
+      height: 1px;
+      width: 40px;
+      background: linear-gradient(90deg, transparent, var(--accent-orange));
+    }
+    .brand-logo::after {
+      background: linear-gradient(90deg, var(--accent-orange), transparent);
+    }
+
+    .hero-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .hero-number {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff6b2b, #f4a926);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.3em;
+    }
+
+    .hero-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin: 0 auto 48px;
+    }
+
+    .portal-cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .portal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      width: 260px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portal-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .portal-card.admin::before { background: linear-gradient(90deg, #e63946, #ff6b2b); }
+    .portal-card.customer::before { background: linear-gradient(90deg, #ff6b2b, #f4a926); }
+
+    .portal-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,107,43,0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .portal-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .portal-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .portal-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .features-row {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .feature-item::before { content: '✓'; color: var(--accent-green); font-weight: 700; }
+
+    .footer-brand {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <main class="landing-hero">
+    <div class="brand-logo">
+      🏍️ Est. 2014
+    </div>
+
+    <h1 class="hero-title">
+      Kannada Riders<br/>
+      Garage <span class="hero-number">14</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Premium motorcycle service management. Expert care for your ride.
+    </p>
+
+    <div class="portal-cards">
+      <a href="/admin/login" class="portal-card admin">
+        <span class="portal-icon">🛡️</span>
+        <div class="portal-title">Admin Portal</div>
+        <div class="portal-desc">Manage operations, customers, vehicles, inventory & reports</div>
+      </a>
+      <a href="/user/login" class="portal-card customer">
+        <span class="portal-icon">👤</span>
+        <div class="portal-title">Customer Portal</div>
+        <div class="portal-desc">Track your bikes, service status, invoices & service history</div>
+      </a>
+    </div>
+
+    <div class="features-row">
+      <span class="feature-item">Service Tracking</span>
+      <span class="feature-item">Digital Invoices</span>
+      <span class="feature-item">Expert Mechanics</span>
+      <span class="feature-item">Genuine Parts</span>
+    </div>
+
+    <div class="footer-brand">© 2024 Kannada Riders Garage 14 · All rights reserved</div>
+  </main>
+
+  <div id="toast-container"></div>
+  <script src="/js/app.js"></script>
+</body>
+</html>
+

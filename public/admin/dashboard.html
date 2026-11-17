@@ -1,0 +1,2632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Kannada Riders Garage 14</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/css/theme.css" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a26;
+      --bg-hover: #22223a;
+      --accent-orange: #ff6b2b;
+      --accent-gold: #f4a926;
+      --accent-red: #e63946;
+      --accent-green: #2dc653;
+      --accent-blue: #4895ef;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9898b0;
+      --text-muted: #55556a;
+      --border: #2a2a3e;
+      --border-active: #ff6b2b;
+      --sidebar-w: 260px;
+      --header-h: 64px;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --shadow: 0 4px 24px rgba(0, 0, 0, .45);
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transition: transform .3s ease;
+      z-index: 200;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    .sidebar-logo {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-logo .logo-icon {
+      font-size: 28px;
+    }
+
+    .sidebar-logo .logo-text {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.25;
+      color: var(--accent-orange);
+      letter-spacing: .5px;
+    }
+
+    .sidebar-logo .logo-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .sidebar-admin {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .admin-info {
+      overflow: hidden;
+    }
+
+    .admin-name {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .admin-role {
+      font-size: 10px;
+      background: rgba(255, 107, 43, .18);
+      color: var(--accent-orange);
+      border: 1px solid rgba(255, 107, 43, .35);
+      border-radius: 20px;
+      padding: 1px 8px;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 10px 0;
+    }
+
+    .nav-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      padding: 10px 20px 4px;
+      text-transform: uppercase;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      transition: all .18s;
+      user-select: none;
+    }
+
+    .nav-item:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .nav-item.active {
+      background: rgba(255, 107, 43, .1);
+      color: var(--accent-orange);
+      border-left-color: var(--accent-orange);
+    }
+
+    .nav-item .nav-icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--accent-red);
+      color: #fff;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 7px;
+    }
+
+    .sidebar-footer {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-logout {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      background: rgba(230, 57, 70, .12);
+      border: 1px solid rgba(230, 57, 70, .25);
+      color: var(--accent-red);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .18s;
+    }
+
+    .btn-logout:hover {
+      background: rgba(230, 57, 70, .22);
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: var(--header-h);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .topbar-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .topbar-time {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    /* ── Sections ── */
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── Stat Cards ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: border-color .18s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent-orange);
+    }
+
+    .stat-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .stat-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .stat-value {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    /* ── Cards / Tables ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .card-body {
+      padding: 0;
+      overflow-x: auto;
+    }
+
+    .card-pad {
+      padding: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 500px;
+    }
+
+    thead th {
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: var(--bg-hover);
+    }
+
+    tbody td {
+      padding: 11px 14px;
+      color: var(--text-primary);
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state .empty-icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .badge-pending {
+      background: rgba(244, 169, 38, .15);
+      color: var(--accent-gold);
+      border: 1px solid rgba(244, 169, 38, .3);
+    }
+
+    .badge-in_progress {
+      background: rgba(72, 149, 239, .15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(72, 149, 239, .3);
+    }
+
+    .badge-completed {
+      background: rgba(45, 198, 83, .15);
+      color: var(--accent-green);
+      border: 1px solid rgba(45, 198, 83, .3);
+    }
+
+    .badge-cancelled {
+      background: rgba(230, 57, 70, .15);
+      color: var(--accent-red);
+      border: 1px solid rgba(230, 57, 70, .3);
+    }
+
+    .badge-active {
+      background: rgba(45, 198, 83, .15);
+      color: var(--accent-green);
+      border: 1px solid rgba(45, 198, 83, .3);
+    }
+
+    .badge-inactive {
+      background: rgba(152, 152, 176, .15);
+      color: var(--text-secondary);
+      border: 1px solid rgba(152, 152, 176, .3);
+    }
+
+    .badge-draft {
+      background: rgba(152, 152, 176, .15);
+      color: var(--text-secondary);
+      border: 1px solid rgba(152, 152, 176, .3);
+    }
+
+    .badge-sent {
+      background: rgba(72, 149, 239, .15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(72, 149, 239, .3);
+    }
+
+    .badge-paid {
+      background: rgba(45, 198, 83, .15);
+      color: var(--accent-green);
+      border: 1px solid rgba(45, 198, 83, .3);
+    }
+
+    .badge-low {
+      background: rgba(230, 57, 70, .15);
+      color: var(--accent-red);
+      border: 1px solid rgba(230, 57, 70, .3);
+    }
+
+    .badge-ok {
+      background: rgba(45, 198, 83, .15);
+      color: var(--accent-green);
+      border: 1px solid rgba(45, 198, 83, .3);
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all .18s;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--accent-orange);
+      color: #fff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #e55a1f;
+    }
+
+    .btn-success {
+      background: var(--accent-green);
+      color: #fff;
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #25a844;
+    }
+
+    .btn-danger {
+      background: rgba(230, 57, 70, .15);
+      color: var(--accent-red);
+      border: 1px solid rgba(230, 57, 70, .3);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(230, 57, 70, .28);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, .06);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    .btn-xs {
+      padding: 3px 8px;
+      font-size: 11px;
+    }
+
+    .btn-loading {
+      position: relative;
+      color: transparent !important;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, .3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Forms / Inputs ── */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 9px 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-size: 13.5px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color .18s;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-orange);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-muted);
+    }
+
+    select.form-control option {
+      background: var(--bg-secondary);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 540px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, .7);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow);
+      animation: modalIn .2s ease;
+    }
+
+    .modal-lg {
+      max-width: 720px;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(.96) translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      background: var(--bg-secondary);
+      z-index: 1;
+    }
+
+    .modal-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px;
+    }
+
+    .modal-close:hover {
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* ── Toast ── */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    .toast {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: var(--shadow);
+      min-width: 220px;
+      max-width: 340px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn .25s ease;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .toast.success {
+      border-left: 3px solid var(--accent-green);
+    }
+
+    .toast.error {
+      border-left: 3px solid var(--accent-red);
+    }
+
+    .toast.info {
+      border-left: 3px solid var(--accent-blue);
+    }
+
+    .toast.warning {
+      border-left: 3px solid var(--accent-gold);
+    }
+
+    .toast-icon {
+      font-size: 16px;
+    }
+
+    /* ── Revenue Chart ── */
+    .chart-wrap {
+      padding: 18px;
+      overflow-x: auto;
+    }
+
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 160px;
+    }
+
+    .bar-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .bar {
+      width: 100%;
+      background: var(--accent-orange);
+      border-radius: 4px 4px 0 0;
+      min-height: 4px;
+      transition: height .4s ease;
+      position: relative;
+    }
+
+    .bar:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 11px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .bar-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ── Detail info ── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .info-item {}
+
+    .info-key {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .info-val {
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* ── Overlay backdrop for mobile ── */
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      z-index: 199;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-backdrop.open {
+        display: block;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sep {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+
+    .text-muted {
+      color: var(--text-muted);
+    }
+
+    .text-orange {
+      color: var(--accent-orange);
+    }
+
+    .text-green {
+      color: var(--accent-green);
+    }
+
+    .text-red {
+      color: var(--accent-red);
+    }
+
+    .fw6 {
+      font-weight: 600;
+    }
+
+    .mt8 {
+      margin-top: 8px;
+    }
+
+    .alert-row {
+      background: rgba(230, 57, 70, .07) !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="toast-container"></div>
+  <div class="sidebar-backdrop" id="backdrop"></div>
+
+  <div class="layout">
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-icon">🏍️</span>
+        <div>
+          <div class="logo-text">Kannada Riders<br>Garage 14</div>
+          <div class="logo-sub">Management System</div>
+        </div>
+      </div>
+
+      <div class="sidebar-admin">
+        <div class="admin-avatar" id="adminInitial">A</div>
+        <div class="admin-info">
+          <div class="admin-name" id="adminName">Loading…</div>
+          <span class="admin-role">Administrator</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item active" data-section="overview">
+          <span class="nav-icon">📊</span> Dashboard
+        </div>
+        <div class="nav-item" data-section="customers">
+          <span class="nav-icon">👥</span> Customers
+        </div>
+        <div class="nav-item" data-section="vehicles">
+          <span class="nav-icon">🏍️</span> Vehicles
+        </div>
+        <div class="nav-item" data-section="bookings">
+          <span class="nav-icon">📅</span> Service Bookings
+        </div>
+        <div class="nav-item" data-section="orders">
+          <span class="nav-icon">🔧</span> Service Orders
+        </div>
+        <div class="nav-item" data-section="estimates">
+          <span class="nav-icon">📊</span> Estimates & Approvals
+        </div>
+        <div class="nav-item" data-section="inventory">
+          <span class="nav-icon">🧰</span> Inventory
+        </div>
+        <div class="nav-item" data-section="mechanics">
+          <span class="nav-icon">🧑‍🔧</span> Mechanics
+        </div>
+        <div class="nav-item" data-section="invoices">
+          <span class="nav-icon">📄</span> Invoices
+        </div>
+        <div class="nav-item" data-section="payments">
+          <span class="nav-icon">💳</span> Payments
+        </div>
+        <div class="nav-item" data-section="reminders">
+          <span class="nav-icon">🔔</span> Reminders
+        </div>
+        <div class="nav-item" data-section="reports">
+          <span class="nav-icon">📈</span> Reports
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout" id="logoutBtn">
+          <span>🚪</span> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- ═══ MAIN ═══ -->
+    <div class="main">
+      <div class="topbar">
+        <button class="hamburger" id="hamburger">☰</button>
+        <div class="topbar-title" id="topbarTitle">Dashboard Overview</div>
+        <div class="topbar-time" id="topbarTime"></div>
+      </div>
+
+      <div class="content">
+
+        <!-- ── OVERVIEW ── -->
+        <div class="section active" id="section-overview">
+          <div class="stats-grid" id="statsGrid">
+            <div class="stat-card"><span class="stat-icon">👥</span>
+              <div class="stat-info">
+                <div class="stat-value" id="s-customers">—</div>
+                <div class="stat-label">Total Customers</div>
+              </div>
+            </div>
+            <div class="stat-card"><span class="stat-icon">🏍️</span>
+              <div class="stat-info">
+                <div class="stat-value" id="s-vehicles">—</div>
+                <div class="stat-label">Total Vehicles</div>
+              </div>
+            </div>
+            <div class="stat-card"><span class="stat-icon">🔧</span>
+              <div class="stat-info">
+                <div class="stat-value" id="s-active">—</div>
+                <div class="stat-label">Active Services</div>
+              </div>
+            </div>
+            <div class="stat-card"><span class="stat-icon">✅</span>
+              <div class="stat-info">
+                <div class="stat-value" id="s-completed">—</div>
+                <div class="stat-label">Completed Services</div>
+              </div>
+            </div>
+            <div class="stat-card"><span class="stat-icon">💰</span>
+              <div class="stat-info">
+                <div class="stat-value" id="s-revenue">—</div>
+                <div class="stat-label">Total Revenue</div>
+              </div>
+            </div>
+            <div class="stat-card"><span class="stat-icon">📄</span>
+              <div class="stat-info">
+                <div class="stat-value" id="s-invoices">—</div>
+                <div class="stat-label">Pending Invoices</div>
+              </div>
+            </div>
+            <div class="stat-card"><span class="stat-icon">⚠️</span>
+              <div class="stat-info">
+                <div class="stat-value" id="s-lowstock">—</div>
+                <div class="stat-label">Low Stock Items</div>
+              </div>
+            </div>
+            <div class="stat-card"><span class="stat-icon">🧑‍🔧</span>
+              <div class="stat-info">
+                <div class="stat-value" id="s-mechanics">—</div>
+                <div class="stat-label">Active Mechanics</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><span class="card-title">Recent Service Orders</span></div>
+            <div class="card-body">
+              <div id="recentOrdersTable"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><span class="card-title">⚠️ Low Stock Alerts</span></div>
+            <div class="card-body">
+              <div id="lowStockList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CUSTOMERS ── -->
+        <div class="section" id="section-customers">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Customers</div>
+              <div class="section-sub">Manage registered customers</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">All Customers</span>
+              <input class="form-control" style="max-width:220px;padding:6px 10px;" placeholder="🔍 Search…"
+                id="custSearch" oninput="filterTable('custTable',this.value)" />
+            </div>
+            <div class="card-body">
+              <div id="custTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── VEHICLES ── -->
+        <div class="section" id="section-vehicles">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Vehicles</div>
+              <div class="section-sub">All registered vehicles</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">All Vehicles</span>
+              <input class="form-control" style="max-width:220px;padding:6px 10px;" placeholder="🔍 Search…"
+                id="vehSearch" oninput="filterTable('vehTable',this.value)" />
+            </div>
+            <div class="card-body">
+              <div id="vehTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SERVICE BOOKINGS ── -->
+        <div class="section" id="section-bookings">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Customer Service Bookings</div>
+              <div class="section-sub">Incoming online service requests from motorcycle riders</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadBookings()">🔄 Refresh Bookings</button>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">All Customer Appointment Requests</span>
+            </div>
+            <div class="card-body">
+              <div id="bookingsTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SERVICE ORDERS ── -->
+        <div class="section" id="section-orders">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Service Orders</div>
+              <div class="section-sub">Track and manage all service orders</div>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('orderCreateModal')">＋ New Order</button>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">All Orders</span>
+              <select class="form-control" style="max-width:160px;padding:6px 10px;" id="orderStatusFilter"
+                onchange="loadOrders()">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="card-body">
+              <div id="ordersTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ESTIMATES & APPROVALS ── -->
+        <div class="section" id="section-estimates">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Estimates & Customer Approvals</div>
+              <div class="section-sub">Detailed parts & labour cost estimates sent to riders</div>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('estimateCreateModal')">＋ New Estimate</button>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">All Service Estimates</span>
+            </div>
+            <div class="card-body">
+              <div id="estimatesTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── INVENTORY ── -->
+        <div class="section" id="section-inventory">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Inventory</div>
+              <div class="section-sub">Parts and stock management</div>
+            </div>
+            <button class="btn btn-primary"
+              onclick="openModal('inventoryModal'); document.getElementById('invForm').reset(); document.getElementById('invModalTitle').textContent='Add Inventory Item'; currentInvId=null;">＋
+              Add Item</button>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div id="invTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MECHANICS ── -->
+        <div class="section" id="section-mechanics">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Mechanics</div>
+              <div class="section-sub">Workshop team management</div>
+            </div>
+            <button class="btn btn-primary"
+              onclick="openModal('mechModal'); document.getElementById('mechForm').reset(); document.getElementById('mechModalTitle').textContent='Add Mechanic'; currentMechId=null;">＋
+              Add Mechanic</button>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div id="mechTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── INVOICES ── -->
+        <div class="section" id="section-invoices">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Invoices</div>
+              <div class="section-sub">Billing and invoice management</div>
+            </div>
+            <button class="btn btn-primary"
+              onclick="openModal('invoiceModal'); document.getElementById('invoiceForm').reset(); currentInvoiceId=null;">＋
+              Create Invoice</button>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div id="invoicesTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PAYMENTS ── -->
+        <div class="section" id="section-payments">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Payments</div>
+              <div class="section-sub">Payment records</div>
+            </div>
+            <button class="btn btn-primary"
+              onclick="openModal('paymentModal'); document.getElementById('paymentForm').reset();">＋ Record
+              Payment</button>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div id="paymentsTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── REMINDERS ── -->
+        <div class="section" id="section-reminders">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Reminders</div>
+              <div class="section-sub">Service and maintenance reminders</div>
+            </div>
+            <button class="btn btn-primary"
+              onclick="openModal('reminderModal'); document.getElementById('reminderForm').reset();">＋ Add
+              Reminder</button>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div id="remindersTable"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── REPORTS ── -->
+        <div class="section" id="section-reports">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Reports</div>
+              <div class="section-sub">Business analytics and insights</div>
+            </div>
+          </div>
+          <div class="stats-grid" id="reportStats" style="margin-bottom:20px;"></div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Monthly Revenue</span></div>
+            <div class="chart-wrap">
+              <div class="bar-chart" id="revenueChart"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+    </div><!-- /main -->
+  </div><!-- /layout -->
+
+  <!-- ═══════════════════════════ MODALS ═══════════════════════════ -->
+
+  <!-- Customer Detail Modal -->
+  <div class="modal-overlay" id="custDetailModal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <span class="modal-title">Customer Details</span>
+        <button class="modal-close" onclick="closeModal('custDetailModal')">✕</button>
+      </div>
+      <div class="modal-body" id="custDetailBody">Loading…</div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('custDetailModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Order Create Modal -->
+  <div class="modal-overlay" id="orderCreateModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">New Service Order</span>
+        <button class="modal-close" onclick="closeModal('orderCreateModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="orderForm" onsubmit="submitOrder(event)">
+          <div class="form-group">
+            <label class="form-label">Customer *</label>
+            <select class="form-control" id="orderCustomer" required onchange="filterVehiclesByCustomer(this.value)">
+              <option value="">Select customer…</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vehicle *</label>
+            <select class="form-control" id="orderVehicle" required>
+              <option value="">Select vehicle…</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mechanic</label>
+            <select class="form-control" id="orderMechanic">
+              <option value="">Assign later…</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description *</label>
+            <textarea class="form-control" id="orderDesc" placeholder="Service description…" required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" id="orderNotes" placeholder="Additional notes…"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estimated Completion</label>
+            <input type="date" class="form-control" id="orderETA" />
+          </div>
+          <div class="modal-footer" style="padding:0;margin-top:8px;">
+            <button type="button" class="btn btn-ghost" onclick="closeModal('orderCreateModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="orderSubmitBtn">Create Order</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estimate Create Modal -->
+  <div class="modal-overlay" id="estimateCreateModal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <span class="modal-title">Generate Service Estimate</span>
+        <button class="modal-close" onclick="closeModal('estimateCreateModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="estimateForm" onsubmit="submitEstimate(event)">
+          <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Customer *</label>
+              <select class="form-control" id="estCustomer" required onchange="filterOrdersByCustomer(this.value)">
+                <option value="">Select customer…</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Service Order *</label>
+              <select class="form-control" id="estOrder" required>
+                <option value="">Select active order…</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Labour Charge (Rs)</label>
+              <input type="number" class="form-control" id="estLabour" value="500" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Discount (Rs)</label>
+              <input type="number" class="form-control" id="estDiscount" value="0" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">GST Tax Rate (%)</label>
+              <input type="number" class="form-control" id="estTaxRate" value="18" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Itemized Parts & Supplies</label>
+            <div id="estItemsContainer">
+              <div class="form-row est-item-row" style="display:grid; grid-template-columns:3fr 1fr 1fr; gap:8px; margin-bottom:8px;">
+                <input type="text" class="form-control est-item-desc" placeholder="Part description (e.g. Engine Oil 15W50)" required />
+                <input type="number" class="form-control est-item-qty" placeholder="Qty" value="1" min="1" required />
+                <input type="number" class="form-control est-item-price" placeholder="Price" value="500" required />
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="addEstItemRow()" style="margin-top:4px;">＋ Add Part Row</button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Technical Notes for Rider</label>
+            <textarea class="form-control" id="estNotes" placeholder="Explain recommended parts, diagnostics observations…"></textarea>
+          </div>
+          <div class="modal-footer" style="padding:0;margin-top:12px;">
+            <button type="button" class="btn btn-ghost" onclick="closeModal('estimateCreateModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btnSubmitEstimate">Send Estimate to Rider</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Detail Modal -->
+  <div class="modal-overlay" id="orderDetailModal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <span class="modal-title">Order Details</span>
+        <button class="modal-close" onclick="closeModal('orderDetailModal')">✕</button>
+      </div>
+      <div class="modal-body" id="orderDetailBody">Loading…</div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('orderDetailModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Order Status Modal -->
+  <div class="modal-overlay" id="orderStatusModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Update Order Status</span>
+        <button class="modal-close" onclick="closeModal('orderStatusModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="orderStatusForm" onsubmit="submitOrderStatus(event)">
+          <input type="hidden" id="statusOrderId" />
+          <div class="form-group">
+            <label class="form-label">New Status *</label>
+            <select class="form-control" id="newOrderStatus" required>
+              <option value="booking_received">1. Booking Received</option>
+              <option value="vehicle_accepted">2. Vehicle Accepted</option>
+              <option value="inspection_started">3. Inspection Started</option>
+              <option value="estimate_generated">4. Estimate Generated</option>
+              <option value="customer_approval">5. Customer Approval</option>
+              <option value="service_in_progress">6. Service In Progress</option>
+              <option value="quality_inspection">7. Quality Inspection</option>
+              <option value="ready_for_delivery">8. Ready for Delivery</option>
+              <option value="delivered">9. Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div class="modal-footer" style="padding:0;margin-top:8px;">
+            <button type="button" class="btn btn-ghost" onclick="closeModal('orderStatusModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="statusSubmitBtn">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventory Modal -->
+  <div class="modal-overlay" id="inventoryModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="invModalTitle">Add Inventory Item</span>
+        <button class="modal-close" onclick="closeModal('inventoryModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="invForm" onsubmit="submitInventory(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Part Name *</label>
+              <input class="form-control" id="invName" required placeholder="e.g. Oil Filter" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Part Number</label>
+              <input class="form-control" id="invPartNo" placeholder="e.g. OF-1234" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <input class="form-control" id="invCategory" placeholder="e.g. Filters" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit Price (₹) *</label>
+              <input type="number" class="form-control" id="invPrice" required min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Quantity *</label>
+              <input type="number" class="form-control" id="invQty" required min="0" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Min Stock Level</label>
+              <input type="number" class="form-control" id="invMin" min="0" value="5" />
+            </div>
+          </div>
+          <div class="modal-footer" style="padding:0;margin-top:8px;">
+            <button type="button" class="btn btn-ghost" onclick="closeModal('inventoryModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="invSubmitBtn">Save Item</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mechanic Modal -->
+  <div class="modal-overlay" id="mechModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="mechModalTitle">Add Mechanic</span>
+        <button class="modal-close" onclick="closeModal('mechModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="mechForm" onsubmit="submitMechanic(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input class="form-control" id="mechName" required placeholder="Mechanic's full name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mobile *</label>
+              <input class="form-control" id="mechMobile" required placeholder="+91 9XXXXXXXXX" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Specialization</label>
+            <input class="form-control" id="mechSpec" placeholder="e.g. Engine, Electrical, Suspension" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-control" id="mechStatus">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="modal-footer" style="padding:0;margin-top:8px;">
+            <button type="button" class="btn btn-ghost" onclick="closeModal('mechModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="mechSubmitBtn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoice Modal -->
+  <div class="modal-overlay" id="invoiceModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Create Invoice</span>
+        <button class="modal-close" onclick="closeModal('invoiceModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="invoiceForm" onsubmit="submitInvoice(event)">
+          <div class="form-group">
+            <label class="form-label">Customer *</label>
+            <select class="form-control" id="invoiceCust" required>
+              <option value="">Select…</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Service Order</label>
+            <select class="form-control" id="invoiceOrder">
+              <option value="">None</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Total Amount (₹) *</label>
+              <input type="number" class="form-control" id="invoiceTotal" required min="0" step="0.01" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status</label>
+              <select class="form-control" id="invoiceStatus">
+                <option value="draft">Draft</option>
+                <option value="sent">Sent</option>
+                <option value="paid">Paid</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" id="invoiceNotes" placeholder="Invoice notes…"></textarea>
+          </div>
+          <div class="modal-footer" style="padding:0;margin-top:8px;">
+            <button type="button" class="btn btn-ghost" onclick="closeModal('invoiceModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="invoiceSubmitBtn">Create Invoice</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoice Detail Modal -->
+  <div class="modal-overlay" id="invoiceDetailModal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <span class="modal-title">Invoice Details</span>
+        <button class="modal-close" onclick="closeModal('invoiceDetailModal')">✕</button>
+      </div>
+      <div class="modal-body" id="invoiceDetailBody">Loading…</div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('invoiceDetailModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Record Payment</span>
+        <button class="modal-close" onclick="closeModal('paymentModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="paymentForm" onsubmit="submitPayment(event)">
+          <div class="form-group">
+            <label class="form-label">Customer *</label>
+            <select class="form-control" id="paymentCust" required>
+              <option value="">Select…</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Amount (₹) *</label>
+              <input type="number" class="form-control" id="paymentAmount" required min="0" step="0.01" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Method *</label>
+              <select class="form-control" id="paymentMethod" required>
+                <option value="cash">Cash</option>
+                <option value="upi">UPI</option>
+                <option value="card">Card</option>
+                <option value="netbanking">Net Banking</option>
+                <option value="cheque">Cheque</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Transaction ID</label>
+            <input class="form-control" id="paymentTxn" placeholder="Optional transaction reference" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Invoice Reference</label>
+            <select class="form-control" id="paymentInvoice">
+              <option value="">None</option>
+            </select>
+          </div>
+          <div class="modal-footer" style="padding:0;margin-top:8px;">
+            <button type="button" class="btn btn-ghost" onclick="closeModal('paymentModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="paymentSubmitBtn">Record Payment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reminder Modal -->
+  <div class="modal-overlay" id="reminderModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Add Reminder</span>
+        <button class="modal-close" onclick="closeModal('reminderModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="reminderForm" onsubmit="submitReminder(event)">
+          <div class="form-group">
+            <label class="form-label">Customer *</label>
+            <select class="form-control" id="reminderCust" required onchange="filterVehiclesForReminder(this.value)">
+              <option value="">Select…</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vehicle</label>
+            <select class="form-control" id="reminderVehicle">
+              <option value="">Select…</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Type *</label>
+              <select class="form-control" id="reminderType" required>
+                <option value="service">Service Due</option>
+                <option value="insurance">Insurance Renewal</option>
+                <option value="puc">PUC Check</option>
+                <option value="registration">Registration Renewal</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Due Date *</label>
+              <input type="date" class="form-control" id="reminderDate" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" id="reminderNotes" placeholder="Additional info…"></textarea>
+          </div>
+          <div class="modal-footer" style="padding:0;margin-top:8px;">
+            <button type="button" class="btn btn-ghost" onclick="closeModal('reminderModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="reminderSubmitBtn">Save Reminder</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    // ═══════════════════════════════════════════════════════════
+    //  Helpers
+    // ═══════════════════════════════════════════════════════════
+    const $ = id => document.getElementById(id);
+
+    // Safe fallback for Format helpers if app.js doesn't define them
+    if (typeof Format === 'undefined') {
+      window.Format = {
+        currency: v => '₹' + (parseFloat(v) || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+        date: s => { if (!s) return '—'; const d = new Date(s); return isNaN(d) ? s : d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); },
+        badge: s => { if (!s) return ''; const cls = `badge badge-${(s || '').toLowerCase().replace(/\s+/g, '_')}`; return `<span class="${cls}">${s.replace(/_/g, ' ')}</span>`; }
+      };
+    }
+
+    // Safe fallback API object
+    if (typeof API === 'undefined') {
+      window.API = {
+        get: async path => { const r = await fetch('/api' + path, { credentials: 'include' }); if (!r.ok) throw new Error(await r.text()); return r.json(); },
+        post: async (path, body) => { const r = await fetch('/api' + path, { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (!r.ok) throw new Error(await r.text()); return r.json(); },
+        put: async (path, body) => { const r = await fetch('/api' + path, { method: 'PUT', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (!r.ok) throw new Error(await r.text()); return r.json(); },
+        delete: async path => { const r = await fetch('/api' + path, { method: 'DELETE', credentials: 'include' }); if (!r.ok) throw new Error(await r.text()); return r.json(); }
+      };
+    }
+
+    // ── Toast ──
+    function toast(msg, type = 'info') {
+      const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      el.innerHTML = `<span class="toast-icon">${icons[type] || '•'}</span><span>${msg}</span>`;
+      $('toast-container').appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
+
+    // ── Modal ──
+    function openModal(id) { $(id).classList.add('open'); }
+    function closeModal(id) { $(id).classList.remove('open'); }
+    // Close on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(o => {
+      o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+    });
+
+    // ── Button loading state ──
+    function setLoading(btn, state) {
+      if (state) { btn.disabled = true; btn.classList.add('btn-loading'); }
+      else { btn.disabled = false; btn.classList.remove('btn-loading'); }
+    }
+
+    // ── Empty state ──
+    function emptyState(msg = 'No records found') {
+      return `<div class="empty-state"><div class="empty-icon">📭</div><p>${msg}</p></div>`;
+    }
+
+    // ── Table filter ──
+    function filterTable(containerId, q) {
+      const rows = document.querySelectorAll(`#${containerId} tbody tr`);
+      const lq = q.toLowerCase();
+      rows.forEach(r => {
+        r.style.display = r.textContent.toLowerCase().includes(lq) ? '' : 'none';
+      });
+    }
+
+    // ── Clock ──
+    function updateClock() {
+      const now = new Date();
+      $('topbarTime').textContent = now.toLocaleString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+    setInterval(updateClock, 1000); updateClock();
+
+    // ═══════════════════════════════════════════════════════════
+    //  Navigation
+    // ═══════════════════════════════════════════════════════════
+    const sectionTitles = {
+      overview: 'Dashboard Overview', customers: 'Customers', vehicles: 'Vehicles',
+      bookings: 'Customer Service Bookings', orders: 'Service Orders', estimates: 'Estimates & Approvals',
+      inventory: 'Inventory', mechanics: 'Mechanics',
+      invoices: 'Invoices', payments: 'Payments', reminders: 'Reminders', reports: 'Reports'
+    };
+    const sectionLoaders = {
+      overview: loadOverview, customers: loadCustomers, vehicles: loadVehicles,
+      bookings: loadBookings, orders: loadOrders, estimates: loadEstimates,
+      inventory: loadInventory, mechanics: loadMechanics,
+      invoices: loadInvoices, payments: loadPayments, reminders: loadReminders, reports: loadReports
+    };
+
+    let currentSection = 'overview';
+
+    function navigate(section) {
+      if (currentSection === section) return;
+      document.querySelector('.section.active')?.classList.remove('active');
+      document.querySelector('.nav-item.active')?.classList.remove('active');
+      $(`section-${section}`)?.classList.add('active');
+      document.querySelector(`.nav-item[data-section="${section}"]`)?.classList.add('active');
+      $('topbarTitle').textContent = sectionTitles[section] || section;
+      currentSection = section;
+      if (sectionLoaders[section]) sectionLoaders[section]();
+      // Close mobile sidebar
+      $('sidebar').classList.remove('open');
+      $('backdrop').classList.remove('open');
+    }
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => navigate(item.dataset.section));
+    });
+
+    // Hamburger
+    $('hamburger').addEventListener('click', () => {
+      $('sidebar').classList.toggle('open');
+      $('backdrop').classList.toggle('open');
+    });
+    $('backdrop').addEventListener('click', () => {
+      $('sidebar').classList.remove('open');
+      $('backdrop').classList.remove('open');
+    });
+
+    // ═══════════════════════════════════════════════════════════
+    //  Auth Check
+    // ═══════════════════════════════════════════════════════════
+    async function checkAuth() {
+      try {
+        const me = await API.get('/auth/me');
+        if (!me || me.role !== 'admin') { window.location.href = '/admin/login'; return; }
+        $('adminName').textContent = me.full_name || me.name || me.email || 'Admin';
+        const initials = (me.full_name || me.name || 'A').trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        $('adminInitial').textContent = initials;
+        loadOverview();
+
+        // Initialize Real-Time Sync
+        if (typeof Realtime !== 'undefined') {
+          Realtime.init('admin');
+          Realtime.on('new_booking_created', data => {
+            toast(`🚨 New Booking: ${data.customerName} for ${data.vehicle} (${data.service_type})`, 'warning');
+            loadOverview();
+          });
+          Realtime.on('estimate_decision_received', data => {
+            toast(`📋 Estimate #${data.estimateId} was ${data.decision.toUpperCase()} by ${data.customerName}!`, 'info');
+            loadOverview();
+          });
+          Realtime.on('payment_received', data => {
+            toast(`💰 Payment Received: Rs. ${data.amount} from ${data.customerName} (Receipt: ${data.receipt_number})`, 'success');
+            loadOverview();
+          });
+          Realtime.on('new_vehicle_registered', data => {
+            toast(`🏍️ New Vehicle Added: ${data.make} ${data.model} (${data.registration_number}) by ${data.customerName}`, 'info');
+          });
+        }
+      } catch (e) {
+        window.location.href = '/admin/login';
+      }
+    }
+
+    $('logoutBtn').addEventListener('click', async () => {
+      try { await API.post('/auth/logout', {}); } catch (e) { }
+      window.location.href = '/admin/login';
+    });
+
+    // ═══════════════════════════════════════════════════════════
+    //  Shared Data Cache
+    // ═══════════════════════════════════════════════════════════
+    let _customers = [], _vehicles = [], _mechanics = [], _orders = [], _invoices = [];
+
+    async function ensureCustomers() {
+      if (!_customers.length) _customers = await API.get('/admin/customers').catch(() => []);
+      return _customers;
+    }
+    async function ensureVehicles() {
+      if (!_vehicles.length) _vehicles = await API.get('/admin/vehicles').catch(() => []);
+      return _vehicles;
+    }
+    async function ensureMechanics() {
+      if (!_mechanics.length) _mechanics = await API.get('/admin/mechanics').catch(() => []);
+      return _mechanics;
+    }
+    async function ensureOrders() {
+      _orders = await API.get('/admin/service-orders').catch(() => []);
+      return _orders;
+    }
+    async function ensureInvoices() {
+      _invoices = await API.get('/admin/invoices').catch(() => []);
+      return _invoices;
+    }
+
+    function populateSelect(selectId, items, valKey, labelFn, addBlank = true) {
+      const sel = $(selectId); if (!sel) return;
+      const cur = sel.value;
+      sel.innerHTML = addBlank ? '<option value="">Select…</option>' : '';
+      items.forEach(i => {
+        const opt = document.createElement('option');
+        opt.value = i[valKey];
+        opt.textContent = labelFn(i);
+        sel.appendChild(opt);
+      });
+      if (cur) sel.value = cur;
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  OVERVIEW
+    // ═══════════════════════════════════════════════════════════
+    async function loadOverview() {
+      try {
+        const stats = await API.get('/admin/stats');
+        $('s-customers').textContent = stats.total_customers ?? '—';
+        $('s-vehicles').textContent = stats.total_vehicles ?? '—';
+        $('s-active').textContent = stats.active_services ?? '—';
+        $('s-completed').textContent = stats.completed_services ?? '—';
+        $('s-revenue').textContent = Format.currency(stats.total_revenue ?? 0);
+        $('s-invoices').textContent = stats.pending_invoices ?? '—';
+        $('s-lowstock').textContent = stats.low_stock_items ?? '—';
+        $('s-mechanics').textContent = stats.active_mechanics ?? '—';
+      } catch (e) { /* Stats not critical */ }
+
+      // Recent orders
+      try {
+        const orders = await API.get('/admin/service-orders');
+        const recent = (orders || []).slice(0, 5);
+        $('recentOrdersTable').innerHTML = renderOrdersTable(recent, false);
+      } catch (e) { $('recentOrdersTable').innerHTML = emptyState('Could not load orders'); }
+
+      // Low stock
+      try {
+        const inv = await API.get('/admin/inventory');
+        const low = (inv || []).filter(i => i.quantity <= i.min_stock);
+        if (!low.length) {
+          $('lowStockList').innerHTML = `<div class="card-pad" style="color:var(--accent-green)">✅ All items are well-stocked</div>`;
+        } else {
+          $('lowStockList').innerHTML = `<table><thead><tr><th>Part</th><th>Category</th><th>Qty</th><th>Min</th></tr></thead><tbody>` +
+            low.map(i => `<tr class="alert-row"><td><strong>${esc(i.name || i.part_name)}</strong></td><td>${esc(i.category || '—')}</td><td><span class="badge badge-low">${i.quantity}</span></td><td>${i.min_stock}</td></tr>`).join('') +
+            `</tbody></table>`;
+        }
+      } catch (e) { $('lowStockList').innerHTML = emptyState(); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  CUSTOMERS
+    // ═══════════════════════════════════════════════════════════
+    async function loadCustomers() {
+      $('custTable').innerHTML = `<div class="card-pad text-muted">Loading…</div>`;
+      try {
+        _customers = [];
+        const data = await ensureCustomers();
+        if (!data.length) { $('custTable').innerHTML = emptyState('No customers yet'); return; }
+        $('custTable').innerHTML = `<table id="custTableInner"><thead><tr>
+      <th>Name</th><th>Email</th><th>Mobile</th><th>Status</th><th>Joined</th><th>Actions</th>
+    </tr></thead><tbody>` +
+          data.map(c => `<tr>
+      <td><strong>${esc(c.full_name || c.name || '—')}</strong></td>
+      <td>${esc(c.email || '—')}</td>
+      <td>${esc(c.mobile || c.phone || '—')}</td>
+      <td>${Format.badge(c.status || 'active')}</td>
+      <td>${Format.date(c.created_at || c.joined_date)}</td>
+      <td><div class="btn-group">
+        <button class="btn btn-ghost btn-xs" onclick="viewCustomer(${c.id})">View</button>
+        <button class="btn btn-danger btn-xs" onclick="toggleCustomerStatus(${c.id},'${c.status}')">${c.status === 'inactive' ? 'Activate' : 'Deactivate'}</button>
+      </div></td>
+    </tr>`).join('') +
+          `</tbody></table>`;
+      } catch (e) { $('custTable').innerHTML = emptyState('Failed to load customers'); toast('Failed to load customers', 'error'); }
+    }
+
+    async function viewCustomer(id) {
+      openModal('custDetailModal');
+      $('custDetailBody').innerHTML = `<div class="text-muted">Loading…</div>`;
+      try {
+        const [c, vehicles, orders] = await Promise.all([
+          API.get(`/admin/customers/${id}`).catch(() => _customers.find(x => x.id === id) || {}),
+          API.get(`/admin/vehicles?customer_id=${id}`).catch(() => []),
+          API.get(`/admin/service-orders?customer_id=${id}`).catch(() => [])
+        ]);
+        $('custDetailBody').innerHTML = `
+      <div class="info-grid" style="margin-bottom:16px;">
+        <div class="info-item"><div class="info-key">Name</div><div class="info-val">${esc(c.full_name || c.name || '—')}</div></div>
+        <div class="info-item"><div class="info-key">Email</div><div class="info-val">${esc(c.email || '—')}</div></div>
+        <div class="info-item"><div class="info-key">Mobile</div><div class="info-val">${esc(c.mobile || c.phone || '—')}</div></div>
+        <div class="info-item"><div class="info-key">Status</div><div class="info-val">${Format.badge(c.status || 'active')}</div></div>
+        <div class="info-item"><div class="info-key">Joined</div><div class="info-val">${Format.date(c.created_at)}</div></div>
+        <div class="info-item"><div class="info-key">Address</div><div class="info-val">${esc(c.address || '—')}</div></div>
+      </div>
+      <div class="sep"></div>
+      <div style="margin-bottom:8px;" class="card-title">🏍️ Vehicles (${vehicles.length})</div>
+      ${vehicles.length ? `<table><thead><tr><th>Make</th><th>Model</th><th>Reg No.</th><th>Year</th></tr></thead><tbody>` +
+            vehicles.map(v => `<tr><td>${esc(v.make || '—')}</td><td>${esc(v.model || '—')}</td><td>${esc(v.registration_number || v.reg_no || '—')}</td><td>${esc(v.year || '—')}</td></tr>`).join('') +
+            `</tbody></table>` : `<p class="text-muted">No vehicles</p>`}
+      <div class="sep"></div>
+      <div style="margin-bottom:8px;" class="card-title">🔧 Service Orders (${orders.length})</div>
+      ${orders.length ? `<table><thead><tr><th>ID</th><th>Status</th><th>Date</th></tr></thead><tbody>` +
+            orders.map(o => `<tr><td>#${o.id}</td><td>${Format.badge(o.status)}</td><td>${Format.date(o.created_at)}</td></tr>`).join('') +
+            `</tbody></table>` : `<p class="text-muted">No service orders</p>`}
+    `;
+      } catch (e) { $('custDetailBody').innerHTML = `<p class="text-muted">Failed to load details</p>`; }
+    }
+
+    async function toggleCustomerStatus(id, status) {
+      if (!confirm(`${status === 'inactive' ? 'Activate' : 'Deactivate'} this customer?`)) return;
+      try {
+        await API.put(`/admin/customers/${id}`, { status: status === 'inactive' ? 'active' : 'inactive' });
+        _customers = [];
+        toast('Customer status updated', 'success');
+        loadCustomers();
+      } catch (e) { toast('Failed to update status', 'error'); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  VEHICLES
+    // ═══════════════════════════════════════════════════════════
+    async function loadVehicles() {
+      $('vehTable').innerHTML = `<div class="card-pad text-muted">Loading…</div>`;
+      try {
+        _vehicles = [];
+        const data = await ensureVehicles();
+        const custs = await ensureCustomers();
+        const custMap = Object.fromEntries(custs.map(c => [c.id, c.full_name || c.name || '—']));
+        if (!data.length) { $('vehTable').innerHTML = emptyState('No vehicles registered'); return; }
+        $('vehTable').innerHTML = `<table id="vehTableInner"><thead><tr>
+      <th>Make</th><th>Model</th><th>Year</th><th>Reg. No.</th><th>Customer</th><th>Color</th><th>Added</th>
+    </tr></thead><tbody>` +
+          data.map(v => `<tr>
+      <td>${esc(v.make || '—')}</td><td>${esc(v.model || '—')}</td><td>${esc(v.year || '—')}</td>
+      <td><strong>${esc(v.registration_number || v.reg_no || '—')}</strong></td>
+      <td>${esc(custMap[v.customer_id] || v.customer_name || '—')}</td>
+      <td>${esc(v.color || '—')}</td>
+      <td>${Format.date(v.created_at)}</td>
+    </tr>`).join('') +
+          `</tbody></table>`;
+      } catch (e) { $('vehTable').innerHTML = emptyState('Failed to load vehicles'); toast('Failed to load vehicles', 'error'); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  SERVICE ORDERS
+    // ═══════════════════════════════════════════════════════════
+    function renderOrdersTable(data, showActions = true) {
+      if (!data.length) return emptyState('No service orders found');
+      return `<table><thead><tr>
+    <th>ID</th><th>Customer</th><th>Vehicle</th><th>Mechanic</th><th>Status</th><th>Date</th>${showActions ? '<th>Actions</th>' : ''}
+  </tr></thead><tbody>` +
+        data.map(o => `<tr>
+    <td><span class="text-orange fw6">#${o.id}</span></td>
+    <td>${esc(o.customer_name || o.customer || '—')}</td>
+    <td>${esc(o.vehicle_name || o.vehicle || (o.vehicle_make ? `${o.vehicle_make} ${o.vehicle_model}` : null) || '—')}</td>
+    <td>${esc(o.mechanic_name || o.mechanic || '—')}</td>
+    <td>${Format.badge(o.status)}</td>
+    <td>${Format.date(o.created_at)}</td>
+    ${showActions ? `<td><div class="btn-group">
+      <button class="btn btn-ghost btn-xs" onclick="viewOrder(${o.id})">Details</button>
+      <button class="btn btn-primary btn-xs" onclick="openStatusModal(${o.id},'${o.status}')">Status</button>
+    </div></td>`: ''}
+  </tr>`).join('') + `</tbody></table>`;
+    }
+
+    async function loadOrders() {
+      $('ordersTable').innerHTML = `<div class="card-pad text-muted">Loading…</div>`;
+      try {
+        const filter = $('orderStatusFilter')?.value;
+        const url = filter ? `/admin/service-orders?status=${filter}` : '/admin/service-orders';
+        _orders = await API.get(url);
+        $('ordersTable').innerHTML = renderOrdersTable(_orders);
+        // Also pre-populate selects for create modal
+        const [custs, mechs] = await Promise.all([ensureCustomers(), ensureMechanics()]);
+        populateSelect('orderCustomer', custs, 'id', c => c.full_name || c.name || c.email);
+        populateSelect('orderMechanic', mechs.filter(m => m.status !== 'inactive'), 'id', m => m.full_name || m.name, true);
+      } catch (e) { $('ordersTable').innerHTML = emptyState('Failed to load orders'); toast('Failed to load orders', 'error'); }
+    }
+
+    async function filterVehiclesByCustomer(custId) {
+      $('orderVehicle').innerHTML = '<option value="">Loading…</option>';
+      if (!custId) { $('orderVehicle').innerHTML = '<option value="">Select vehicle…</option>'; return; }
+      try {
+        const vehs = await API.get(`/admin/vehicles?customer_id=${custId}`);
+        populateSelect('orderVehicle', vehs, 'id', v => `${v.make || ''} ${v.model || ''} (${v.registration_number || v.reg_no || ''})`);
+      } catch (e) { $('orderVehicle').innerHTML = '<option value="">No vehicles</option>'; }
+    }
+
+    async function viewOrder(id) {
+      openModal('orderDetailModal');
+      $('orderDetailBody').innerHTML = '<div class="text-muted">Loading…</div>';
+      try {
+        const o = await API.get(`/admin/service-orders/${id}`).catch(() => _orders.find(x => x.id === id) || {});
+        $('orderDetailBody').innerHTML = `
+      <div class="info-grid" style="margin-bottom:16px;">
+        <div class="info-item"><div class="info-key">Order ID</div><div class="info-val text-orange">#${o.id}</div></div>
+        <div class="info-item"><div class="info-key">Status</div><div class="info-val">${Format.badge(o.status)}</div></div>
+        <div class="info-item"><div class="info-key">Customer</div><div class="info-val">${esc(o.customer_name || o.customer || '—')}</div></div>
+        <div class="info-item"><div class="info-key">Vehicle</div><div class="info-val">${esc(o.vehicle_name || o.vehicle || (o.vehicle_make ? `${o.vehicle_make} ${o.vehicle_model}` : null) || '—')}</div></div>
+        <div class="info-item"><div class="info-key">Mechanic</div><div class="info-val">${esc(o.mechanic_name || o.mechanic || 'Not assigned')}</div></div>
+        <div class="info-item"><div class="info-key">ETA</div><div class="info-val">${Format.date(o.estimated_completion || o.eta)}</div></div>
+        <div class="info-item"><div class="info-key">Created</div><div class="info-val">${Format.date(o.created_at)}</div></div>
+      </div>
+      <div class="sep"></div>
+      <div class="info-key">Description</div>
+      <p style="margin-top:4px;color:var(--text-primary);">${esc(o.description || '—')}</p>
+      ${o.notes ? `<div class="info-key" style="margin-top:12px;">Notes</div><p style="margin-top:4px;color:var(--text-secondary);">${esc(o.notes)}</p>` : ''}
+      ${o.service_items?.length ? `<div class="sep"></div><div class="card-title" style="margin-bottom:8px;">Service Items</div><table><thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead><tbody>` +
+            o.service_items.map(si => `<tr><td>${esc(si.name || si.description || '—')}</td><td>${si.quantity || 1}</td><td>${Format.currency(si.price || 0)}</td></tr>`).join('') +
+            `</tbody></table>` : ''}
+    `;
+      } catch (e) { $('orderDetailBody').innerHTML = '<p class="text-muted">Failed to load order details</p>'; }
+    }
+
+    function openStatusModal(id, currentStatus) {
+      $('statusOrderId').value = id;
+      $('newOrderStatus').value = currentStatus;
+      openModal('orderStatusModal');
+    }
+
+    async function submitOrder(e) {
+      e.preventDefault();
+      const btn = $('orderSubmitBtn'); setLoading(btn, true);
+      try {
+        await API.post('/admin/service-orders', {
+          customer_id: $('orderCustomer').value,
+          vehicle_id: $('orderVehicle').value,
+          mechanic_id: $('orderMechanic').value || null,
+          description: $('orderDesc').value,
+          notes: $('orderNotes').value,
+          estimated_completion: $('orderETA').value || null
+        });
+        closeModal('orderCreateModal');
+        $('orderForm').reset();
+        toast('Service order created!', 'success');
+        loadOrders();
+      } catch (e) { toast(`Error: ${e.message}`, 'error'); }
+      finally { setLoading(btn, false); }
+    }
+
+    async function submitOrderStatus(e) {
+      e.preventDefault();
+      const btn = $('statusSubmitBtn'); setLoading(btn, true);
+      const id = $('statusOrderId').value;
+      try {
+        await API.put(`/admin/service-orders/${id}`, { status: $('newOrderStatus').value });
+        closeModal('orderStatusModal');
+        toast('Status updated!', 'success');
+        loadOrders();
+        if (currentSection === 'overview') loadOverview();
+      } catch (e) { toast(`Error: ${e.message}`, 'error'); }
+      finally { setLoading(btn, false); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  INVENTORY
+    // ═══════════════════════════════════════════════════════════
+    let currentInvId = null;
+
+    async function loadInventory() {
+      $('invTable').innerHTML = `<div class="card-pad text-muted">Loading…</div>`;
+      try {
+        const data = await API.get('/admin/inventory');
+        if (!data.length) { $('invTable').innerHTML = emptyState('No inventory items'); return; }
+        $('invTable').innerHTML = `<table><thead><tr>
+      <th>Part Name</th><th>Part #</th><th>Category</th><th>Qty</th><th>Unit Price</th><th>Min Stock</th><th>Status</th><th>Actions</th>
+    </tr></thead><tbody>` +
+          data.map(i => {
+            const low = i.quantity <= i.min_stock;
+            return `<tr${low ? ' class="alert-row"' : ''}>
+        <td><strong>${esc(i.name || i.part_name || '—')}</strong></td>
+        <td><code style="font-size:12px;color:var(--text-muted)">${esc(i.part_number || '—')}</code></td>
+        <td>${esc(i.category || '—')}</td>
+        <td>${i.quantity}</td>
+        <td>${Format.currency(i.unit_price || i.price || 0)}</td>
+        <td>${i.min_stock ?? '—'}</td>
+        <td>${Format.badge(low ? 'low' : 'ok')}</td>
+        <td><div class="btn-group">
+          <button class="btn btn-ghost btn-xs" onclick="editInventory(${i.id})">Edit</button>
+          <button class="btn btn-danger btn-xs" onclick="deleteInventory(${i.id})">Delete</button>
+        </div></td>
+      </tr>`;
+          }).join('') + `</tbody></table>`;
+      } catch (e) { $('invTable').innerHTML = emptyState('Failed to load inventory'); toast('Error loading inventory', 'error'); }
+    }
+
+    async function editInventory(id) {
+      try {
+        const data = await API.get('/admin/inventory');
+        const item = data.find(i => i.id === id);
+        if (!item) return;
+        currentInvId = id;
+        $('invModalTitle').textContent = 'Edit Inventory Item';
+        $('invName').value = item.name || item.part_name || '';
+        $('invPartNo').value = item.part_number || '';
+        $('invCategory').value = item.category || '';
+        $('invPrice').value = item.unit_price || item.price || '';
+        $('invQty').value = item.quantity || '';
+        $('invMin').value = item.min_stock || 5;
+        openModal('inventoryModal');
+      } catch (e) { toast('Error loading item', 'error'); }
+    }
+
+    async function submitInventory(e) {
+      e.preventDefault();
+      const btn = $('invSubmitBtn'); setLoading(btn, true);
+      const body = {
+        name: $('invName').value, part_number: $('invPartNo').value,
+        category: $('invCategory').value, unit_price: parseFloat($('invPrice').value),
+        quantity: parseInt($('invQty').value), min_stock: parseInt($('invMin').value) || 5
+      };
+      try {
+        if (currentInvId) await API.put(`/admin/inventory/${currentInvId}`, body);
+        else await API.post('/admin/inventory', body);
+        closeModal('inventoryModal');
+        toast(currentInvId ? 'Item updated!' : 'Item added!', 'success');
+        loadInventory();
+      } catch (e) { toast(`Error: ${e.message}`, 'error'); }
+      finally { setLoading(btn, false); }
+    }
+
+    async function deleteInventory(id) {
+      if (!confirm('Delete this inventory item?')) return;
+      try {
+        await API.delete(`/admin/inventory/${id}`);
+        toast('Item deleted', 'success');
+        loadInventory();
+      } catch (e) { toast('Error deleting item', 'error'); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  MECHANICS
+    // ═══════════════════════════════════════════════════════════
+    let currentMechId = null;
+
+    async function loadMechanics() {
+      $('mechTable').innerHTML = `<div class="card-pad text-muted">Loading…</div>`;
+      try {
+        _mechanics = [];
+        const data = await ensureMechanics();
+        if (!data.length) { $('mechTable').innerHTML = emptyState('No mechanics found'); return; }
+        $('mechTable').innerHTML = `<table><thead><tr>
+      <th>Name</th><th>Mobile</th><th>Specialization</th><th>Status</th><th>Actions</th>
+    </tr></thead><tbody>` +
+          data.map(m => `<tr>
+      <td><strong>${esc(m.full_name || m.name || '—')}</strong></td>
+      <td>${esc(m.mobile || m.phone || '—')}</td>
+      <td>${esc(m.specialization || '—')}</td>
+      <td>${Format.badge(m.status || 'active')}</td>
+      <td><div class="btn-group">
+        <button class="btn btn-ghost btn-xs" onclick="editMechanic(${m.id})">Edit</button>
+        <button class="btn btn-danger btn-xs" onclick="toggleMechStatus(${m.id},'${m.status}')">${m.status === 'inactive' ? 'Activate' : 'Deactivate'}</button>
+      </div></td>
+    </tr>`).join('') + `</tbody></table>`;
+      } catch (e) { $('mechTable').innerHTML = emptyState('Failed to load mechanics'); toast('Error loading mechanics', 'error'); }
+    }
+
+    async function editMechanic(id) {
+      const m = _mechanics.find(x => x.id === id);
+      if (!m) return;
+      currentMechId = id;
+      $('mechModalTitle').textContent = 'Edit Mechanic';
+      $('mechName').value = m.full_name || m.name || '';
+      $('mechMobile').value = m.mobile || m.phone || '';
+      $('mechSpec').value = m.specialization || '';
+      $('mechStatus').value = m.status || 'active';
+      openModal('mechModal');
+    }
+
+    async function submitMechanic(e) {
+      e.preventDefault();
+      const btn = $('mechSubmitBtn'); setLoading(btn, true);
+      const body = { full_name: $('mechName').value, mobile: $('mechMobile').value, specialization: $('mechSpec').value, status: $('mechStatus').value };
+      try {
+        if (currentMechId) await API.put(`/admin/mechanics/${currentMechId}`, body);
+        else await API.post('/admin/mechanics', body);
+        _mechanics = [];
+        closeModal('mechModal');
+        toast(currentMechId ? 'Mechanic updated!' : 'Mechanic added!', 'success');
+        loadMechanics();
+      } catch (e) { toast(`Error: ${e.message}`, 'error'); }
+      finally { setLoading(btn, false); }
+    }
+
+    async function toggleMechStatus(id, status) {
+      if (!confirm(`${status === 'inactive' ? 'Activate' : 'Deactivate'} this mechanic?`)) return;
+      try {
+        await API.put(`/admin/mechanics/${id}`, { status: status === 'inactive' ? 'active' : 'inactive' });
+        _mechanics = [];
+        toast('Status updated', 'success');
+        loadMechanics();
+      } catch (e) { toast('Error updating status', 'error'); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  INVOICES
+    // ═══════════════════════════════════════════════════════════
+    let currentInvoiceId = null;
+
+    async function loadInvoices() {
+      $('invoicesTable').innerHTML = `<div class="card-pad text-muted">Loading…</div>`;
+      try {
+        _invoices = await API.get('/admin/invoices');
+        if (!_invoices.length) { $('invoicesTable').innerHTML = emptyState('No invoices yet'); return; }
+        $('invoicesTable').innerHTML = `<table><thead><tr>
+      <th>Invoice ID</th><th>Customer</th><th>Service</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th>
+    </tr></thead><tbody>` +
+          _invoices.map(i => `<tr>
+      <td><span class="text-orange fw6">INV-${String(i.id).padStart(4, '0')}</span></td>
+      <td>${esc(i.customer_name || i.customer || '—')}</td>
+      <td>${i.order_id ? `#${i.order_id}` : '—'}</td>
+      <td>${Format.currency(i.total_amount || i.total || 0)}</td>
+      <td>${Format.badge(i.status || 'draft')}</td>
+      <td>${Format.date(i.created_at)}</td>
+      <td><div class="btn-group">
+        <button class="btn btn-ghost btn-xs" onclick="viewInvoice(${i.id})">View</button>
+        <button class="btn btn-primary btn-xs" onclick="updateInvoiceStatus(${i.id},'${i.status}')">Status</button>
+      </div></td>
+    </tr>`).join('') + `</tbody></table>`;
+
+        // Populate selects
+        const custs = await ensureCustomers();
+        populateSelect('invoiceCust', custs, 'id', c => c.full_name || c.name || c.email);
+        const ords = await ensureOrders();
+        populateSelect('invoiceOrder', ords, 'id', o => `#${o.id} — ${o.customer_name || o.customer || ''}`, true);
+      } catch (e) { $('invoicesTable').innerHTML = emptyState('Failed to load invoices'); toast('Error loading invoices', 'error'); }
+    }
+
+    async function viewInvoice(id) {
+      openModal('invoiceDetailModal');
+      $('invoiceDetailBody').innerHTML = '<div class="text-muted">Loading…</div>';
+      try {
+        const inv = await API.get(`/admin/invoices/${id}`).catch(() => _invoices.find(x => x.id === id) || {});
+        $('invoiceDetailBody').innerHTML = `
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;color:var(--accent-orange);">INVOICE</div>
+        <div style="font-size:13px;color:var(--text-muted);">INV-${String(inv.id).padStart(4, '0')}</div>
+      </div>
+      <div class="info-grid" style="margin-bottom:16px;">
+        <div class="info-item"><div class="info-key">Customer</div><div class="info-val">${esc(inv.customer_name || inv.customer || '—')}</div></div>
+        <div class="info-item"><div class="info-key">Status</div><div class="info-val">${Format.badge(inv.status || 'draft')}</div></div>
+        <div class="info-item"><div class="info-key">Date</div><div class="info-val">${Format.date(inv.created_at)}</div></div>
+        <div class="info-item"><div class="info-key">Service Order</div><div class="info-val">${inv.order_id ? `#${inv.order_id}` : '—'}</div></div>
+      </div>
+      ${inv.items?.length ? `<div class="sep"></div><table><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>` +
+            inv.items.map(item => `<tr><td>${esc(item.description || item.name || '—')}</td><td>${item.quantity || 1}</td><td>${Format.currency(item.rate || item.price || 0)}</td><td>${Format.currency((item.quantity || 1) * (item.rate || item.price || 0))}</td></tr>`).join('') +
+            `</tbody></table>` : ''}
+      <div class="sep"></div>
+      <div style="text-align:right;font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;">
+        Total: <span class="text-orange">${Format.currency(inv.total_amount || inv.total || 0)}</span>
+      </div>
+      ${inv.notes ? `<div class="sep"></div><div class="text-muted" style="font-size:12px;">${esc(inv.notes)}</div>` : ''}
+    `;
+      } catch (e) { $('invoiceDetailBody').innerHTML = '<p class="text-muted">Failed to load invoice</p>'; }
+    }
+
+    async function updateInvoiceStatus(id, current) {
+      const opts = ['draft', 'sent', 'paid', 'cancelled'].filter(s => s !== current);
+      const next = prompt(`Current: ${current}\nEnter new status:\n${opts.join(', ')}`);
+      if (!next || !opts.includes(next)) return;
+      try {
+        await API.put(`/admin/invoices/${id}`, { status: next });
+        toast('Invoice status updated', 'success');
+        loadInvoices();
+      } catch (e) { toast('Error updating invoice', 'error'); }
+    }
+
+    async function submitInvoice(e) {
+      e.preventDefault();
+      const btn = $('invoiceSubmitBtn'); setLoading(btn, true);
+      try {
+        await API.post('/admin/invoices', {
+          customer_id: $('invoiceCust').value,
+          order_id: $('invoiceOrder').value || null,
+          total_amount: parseFloat($('invoiceTotal').value),
+          status: $('invoiceStatus').value,
+          notes: $('invoiceNotes').value
+        });
+        closeModal('invoiceModal');
+        toast('Invoice created!', 'success');
+        loadInvoices();
+      } catch (e) { toast(`Error: ${e.message}`, 'error'); }
+      finally { setLoading(btn, false); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  PAYMENTS
+    // ═══════════════════════════════════════════════════════════
+    async function loadPayments() {
+      $('paymentsTable').innerHTML = `<div class="card-pad text-muted">Loading…</div>`;
+      try {
+        const data = await API.get('/admin/payments');
+        if (!data.length) { $('paymentsTable').innerHTML = emptyState('No payments recorded'); return; }
+        $('paymentsTable').innerHTML = `<table><thead><tr>
+      <th>Payment ID</th><th>Customer</th><th>Amount</th><th>Method</th><th>Date</th><th>Transaction ID</th>
+    </tr></thead><tbody>` +
+          data.map(p => `<tr>
+      <td><span class="text-orange fw6">PAY-${String(p.id).padStart(4, '0')}</span></td>
+      <td>${esc(p.customer_name || p.customer || '—')}</td>
+      <td><strong class="text-green">${Format.currency(p.amount || 0)}</strong></td>
+      <td><span class="badge badge-active" style="text-transform:capitalize">${esc(p.method || p.payment_method || '—')}</span></td>
+      <td>${Format.date(p.created_at || p.payment_date)}</td>
+      <td><code style="font-size:11px;color:var(--text-muted)">${esc(p.transaction_id || p.txn_id || '—')}</code></td>
+    </tr>`).join('') + `</tbody></table>`;
+
+        const [custs, invs] = await Promise.all([ensureCustomers(), ensureInvoices()]);
+        populateSelect('paymentCust', custs, 'id', c => c.full_name || c.name || c.email);
+        populateSelect('paymentInvoice', invs, 'id', i => `INV-${String(i.id).padStart(4, '0')} (${Format.currency(i.total_amount || 0)})`, true);
+      } catch (e) { $('paymentsTable').innerHTML = emptyState('Failed to load payments'); toast('Error loading payments', 'error'); }
+    }
+
+    async function submitPayment(e) {
+      e.preventDefault();
+      const btn = $('paymentSubmitBtn'); setLoading(btn, true);
+      try {
+        await API.post('/admin/payments', {
+          customer_id: $('paymentCust').value,
+          amount: parseFloat($('paymentAmount').value),
+          method: $('paymentMethod').value,
+          transaction_id: $('paymentTxn').value || null,
+          invoice_id: $('paymentInvoice').value || null
+        });
+        closeModal('paymentModal');
+        toast('Payment recorded!', 'success');
+        loadPayments();
+      } catch (e) { toast(`Error: ${e.message}`, 'error'); }
+      finally { setLoading(btn, false); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  REMINDERS
+    // ═══════════════════════════════════════════════════════════
+    async function loadReminders() {
+      $('remindersTable').innerHTML = `<div class="card-pad text-muted">Loading…</div>`;
+      try {
+        const data = await API.get('/admin/reminders');
+        if (!data.length) { $('remindersTable').innerHTML = emptyState('No reminders set'); return; }
+        const now = new Date();
+        $('remindersTable').innerHTML = `<table><thead><tr>
+      <th>Customer</th><th>Vehicle</th><th>Type</th><th>Due Date</th><th>Sent?</th><th>Actions</th>
+    </tr></thead><tbody>` +
+          data.map(r => {
+            const due = new Date(r.due_date);
+            const overdue = due < now;
+            return `<tr${overdue ? ' class="alert-row"' : ''}>
+        <td>${esc(r.customer_name || r.customer || '—')}</td>
+        <td>${esc(r.vehicle_name || r.vehicle || '—')}</td>
+        <td><span class="badge badge-pending" style="text-transform:capitalize">${esc(r.type || r.reminder_type || '—')}</span></td>
+        <td>${overdue ? `<span class="text-red">` : ``}${Format.date(r.due_date)}${overdue ? ` ⚠️</span>` : ''}</td>
+        <td>${r.sent || r.is_sent ? '<span class="text-green">✓ Yes</span>' : '<span class="text-muted">No</span>'}</td>
+        <td><button class="btn btn-danger btn-xs" onclick="deleteReminder(${r.id})">Remove</button></td>
+      </tr>`;
+          }).join('') + `</tbody></table>`;
+
+        const custs = await ensureCustomers();
+        populateSelect('reminderCust', custs, 'id', c => c.full_name || c.name || c.email);
+      } catch (e) { $('remindersTable').innerHTML = emptyState('Failed to load reminders'); toast('Error loading reminders', 'error'); }
+    }
+
+    async function filterVehiclesForReminder(custId) {
+      if (!custId) { $('reminderVehicle').innerHTML = '<option value="">Select…</option>'; return; }
+      try {
+        const vehs = await API.get(`/admin/vehicles?customer_id=${custId}`);
+        populateSelect('reminderVehicle', vehs, 'id', v => `${v.make || ''} ${v.model || ''} (${v.registration_number || v.reg_no || ''})`);
+      } catch (e) { }
+    }
+
+    async function submitReminder(e) {
+      e.preventDefault();
+      const btn = $('reminderSubmitBtn'); setLoading(btn, true);
+      try {
+        await API.post('/admin/reminders', {
+          customer_id: $('reminderCust').value,
+          vehicle_id: $('reminderVehicle').value || null,
+          type: $('reminderType').value,
+          due_date: $('reminderDate').value,
+          notes: $('reminderNotes').value
+        });
+        closeModal('reminderModal');
+        toast('Reminder added!', 'success');
+        loadReminders();
+      } catch (e) { toast(`Error: ${e.message}`, 'error'); }
+      finally { setLoading(btn, false); }
+    }
+
+    async function deleteReminder(id) {
+      if (!confirm('Remove this reminder?')) return;
+      try {
+        await API.delete(`/admin/reminders/${id}`);
+        toast('Reminder removed', 'success');
+        loadReminders();
+      } catch (e) { toast('Error removing reminder', 'error'); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  REPORTS
+    // ═══════════════════════════════════════════════════════════
+    async function loadReports() {
+      try {
+        const data = await API.get('/admin/reports/revenue').catch(() => null);
+        if (!data) { $('revenueChart').innerHTML = `<p class="text-muted" style="padding:20px;">No revenue data available</p>`; return; }
+
+        const months = data.months || data.labels || Object.keys(data);
+        const values = data.values || data.data || Object.values(data);
+        const max = Math.max(...values, 1);
+
+        $('revenueChart').innerHTML = months.map((m, i) => {
+          const pct = Math.max((values[i] / max) * 100, 1);
+          const tip = `${m}: ${Format.currency(values[i])}`;
+          return `<div class="bar-col">
+        <div class="bar" style="height:${pct}%" data-tip="${tip}"></div>
+        <div class="bar-label">${m}</div>
+      </div>`;
+        }).join('');
+
+        const total = values.reduce((a, b) => a + b, 0);
+        const avg = total / values.length;
+        $('reportStats').innerHTML = `
+      <div class="stat-card"><span class="stat-icon">💰</span><div class="stat-info"><div class="stat-value">${Format.currency(total)}</div><div class="stat-label">Total Revenue</div></div></div>
+      <div class="stat-card"><span class="stat-icon">📊</span><div class="stat-info"><div class="stat-value">${Format.currency(avg)}</div><div class="stat-label">Monthly Average</div></div></div>
+      <div class="stat-card"><span class="stat-icon">🔝</span><div class="stat-info"><div class="stat-value">${Format.currency(Math.max(...values))}</div><div class="stat-label">Best Month</div></div></div>
+      <div class="stat-card"><span class="stat-icon">📅</span><div class="stat-info"><div class="stat-value">${months.length}</div><div class="stat-label">Months Tracked</div></div></div>
+    `;
+      } catch (e) { toast('Error loading reports', 'error'); }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Utils
+    // ═══════════════════════════════════════════════════════════
+    function esc(str) {
+      if (str == null) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Boot
+    // ═══════════════════════════════════════════════════════════
+    checkAuth();
+  </script>
+</body>
+
+</html>

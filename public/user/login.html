@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Login — Kannada Riders Garage 14</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/theme.css"/>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 60%, rgba(255,107,43,0.1) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 20%, rgba(244,169,38,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .login-container { width: 100%; max-width: 440px; position: relative; z-index: 1; }
+    .login-brand { text-align: center; margin-bottom: 32px; }
+    .login-brand .garage-icon { font-size: 2.5rem; display: block; margin-bottom: 8px; }
+    .login-brand h1 { font-size: 1.5rem; }
+    .login-brand .subtitle { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+    .login-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff6b2b, #f4a926);
+    }
+    .login-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+    .role-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,107,43,0.12); border: 1px solid rgba(255,107,43,0.3);
+      color: #ff9f78; padding: 5px 12px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .forgot-link { font-size: 0.85rem; color: var(--text-muted); text-align: right; display: block; margin-top: -12px; margin-bottom: 20px; }
+    .forgot-link:hover { color: var(--accent-orange); }
+    .register-link { text-align: center; margin-top: 20px; font-size: 0.875rem; color: var(--text-secondary); }
+    .register-link a { color: var(--accent-orange); font-weight: 600; }
+    .back-link { text-align: center; margin-top: 12px; font-size: 0.875rem; color: var(--text-muted); }
+    .back-link a { color: var(--accent-orange); }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-brand">
+      <span class="garage-icon">🏍️</span>
+      <h1 class="gradient-text">Kannada Riders Garage 14</h1>
+      <p class="subtitle">Customer Portal</p>
+    </div>
+
+    <div class="login-box">
+      <div class="login-heading">
+        <span class="role-badge">👤 Customer</span>
+        <h2 style="font-size:1.3rem;">Customer Login</h2>
+      </div>
+
+      <div id="alert" class="alert"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="identifier">Email or Mobile Number</label>
+          <input
+            type="text"
+            id="identifier"
+            name="identifier"
+            class="form-control"
+            placeholder="email@example.com or 9876543210"
+            autocomplete="username"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            />
+            <button type="button" class="input-group-icon" data-toggle-password="password">👁</button>
+          </div>
+        </div>
+
+        <a href="#" class="forgot-link" id="forgotBtn">Forgot password?</a>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submitBtn">
+          🔑 Login
+        </button>
+      </form>
+
+      <div class="register-link">
+        New customer? <a href="/user/register">Create an account →</a>
+      </div>
+      <div class="back-link">
+        <a href="/">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="/js/app.js"></script>
+  <script>
+    const form      = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const alertEl   = document.getElementById('alert');
+
+    // Redirect if already logged in
+    (async () => {
+      try {
+        const { ok, data } = await API.get('/auth/me');
+        if (ok && data.user && data.user.role === 'customer') window.location.href = '/user/dashboard';
+      } catch(e) {}
+    })();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      FormUtils.hideAlert(alertEl);
+      const identifier = document.getElementById('identifier').value.trim();
+      const password   = document.getElementById('password').value;
+      if (!identifier || !password) {
+        FormUtils.showAlert(alertEl, 'Please enter your credentials.');
+        return;
+      }
+      FormUtils.setLoading(submitBtn, true);
+      try {
+        const { ok, data } = await API.post('/auth/customer/login', { identifier, password });
+        if (ok && data.success) {
+          Toast.success('Welcome back, ' + data.user.full_name + '!');
+          setTimeout(() => window.location.href = '/user/dashboard', 800);
+        } else {
+          const msg = data.errors ? data.errors[0].msg : (data.message || 'Login failed.');
+          FormUtils.showAlert(alertEl, msg);
+          FormUtils.setLoading(submitBtn, false);
+        }
+      } catch(err) {
+        FormUtils.showAlert(alertEl, 'Connection error. Please try again.');
+        FormUtils.setLoading(submitBtn, false);
+      }
+    });
+
+    document.getElementById('forgotBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      Toast.warning('Please contact us at the garage to reset your password.');
+    });
+  </script>
+</body>
+</html>
+
